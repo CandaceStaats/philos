@@ -15,9 +15,9 @@ void	print(char *message, t_philo *philo, int unlock)
 void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->env->forks[philo->left_fork]);
-	print("has taken left fork", philo, UNLOCK);
+	print("has taken a fork", philo, UNLOCK);
 	pthread_mutex_lock(&philo->env->forks[philo->right_fork]);
-	print("has taken right fork", philo, UNLOCK);
+	print("has taken a fork", philo, UNLOCK);
 	pthread_mutex_lock(&philo->env->meal);
 	print("is eating", philo, UNLOCK);
 	philo->last_ate = get_time_in_ms();
@@ -41,7 +41,9 @@ void	dead(t_env *env, t_philo *philo)
 			if ((int)(get_time_in_ms() - philo[i].last_ate) >= env->time_to_die)
 			{
 				print("died", &philo[i], LOCK);
+				pthread_mutex_lock(&env->stoplock);
 				env->stop = 1;
+				pthread_mutex_unlock(&env->stoplock);
 			}
 			pthread_mutex_unlock(&env->meal);
 		}

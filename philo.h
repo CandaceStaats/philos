@@ -36,6 +36,7 @@ typedef struct s_env
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	meal;
+	pthread_mutex_t stoplock;
 	pthread_mutex_t	writing;
 }				t_env;
 
@@ -56,6 +57,7 @@ void				*ft_calloc(size_t nitems, size_t size);
 char				*ft_itoa(int n);
 int					ft_isdigitstr(const char *str);
 char				*ft_strdup(const char *s1);
+int					checkStop(t_env *env);
 
 
 #endif

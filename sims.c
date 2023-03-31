@@ -8,7 +8,7 @@ static void	*simulation(void *params)
 	env = philo->env;
 	if (philo->pos % 2 && env->num_of_philos > 1)
 		sleepy(env->time_to_eat / 50, env);
-	while (!env->stop && !env->must_eat)
+	while (checkStop(env) == 0 && !env->must_eat)
 	{
 		eat(philo);
 		print("is sleeping", philo, UNLOCK);

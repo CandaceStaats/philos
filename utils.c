@@ -48,12 +48,25 @@ size_t	ft_strlen(char const *str)
 	return (cnt);
 }
 
+int checkStop(t_env *env)
+{
+	int steve;
+	steve = 0;
+	pthread_mutex_lock(&env->stoplock);
+	if (env->stop == 1)
+		steve = 1;
+	pthread_mutex_unlock(&env->stoplock);
+	return(steve);
+}
+
+
+
 void	sleepy(unsigned long long timing, t_env *env)
 {
 	unsigned long	begin;
 
 	begin = get_time_in_ms();
-	while (!env->stop)
+	while (checkStop(env) == 0)
 	{
 		if (get_time_in_ms() - begin >= timing)
 			break ;
