@@ -9,7 +9,7 @@ int	main(int argc, char *argv[])
 		return (printf("Incorrect Amount of parameters"));
 	if (errorChecks(&env, argc, argv) == -1)
 		return (printf("Incorrect Parameters Given.\n"));
-	if (!startSim(&env))
+	if (startSim(&env))
 		return (printf("Error in Initialization.\n"));
 	if (!startThreads(&env))
 		return (printf("Error in Actions.\n"));
