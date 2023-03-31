@@ -1,7 +1,7 @@
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRCS = main.c states.c errorchecks.c sims.c \
 actions.c utils.c contutils.c 
 
@@ -11,7 +11,7 @@ OBS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBS)
-	$(CC) -o $(NAME) $(OBS)
+	$(CC) -o $(NAME) $(OBS) -g -fsanitize=address
 
 %.o: %.c philo.h
 	$(CC) -c $(CFLAGS) $<

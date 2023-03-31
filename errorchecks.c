@@ -6,7 +6,7 @@ int	errorChecks(t_env *env, int argc, char *argv[])
 	i = 1;
 	while (i < argc)
 	{
-		if (isvalid(argc, &argv[i]))
+		if (isvalid(argc, argv))
 			return (0);
 		if (ft_atoi(argv[i]) == 0)
 			return (0);
@@ -30,7 +30,7 @@ void *isvalid(int argc, char **argv)
     int n;
 
     n = 1;
-    while (n != argc)
+    while (n < argc)
     {
         if (ft_isdigitstr(argv[n]) == -1)
         {
@@ -52,6 +52,7 @@ int ft_isdigitstr(const char *str)
     int i;
 
     i = 0;
+	
     if (str[i] == '-' || str[i] == '+')
         i++;
     while (str[i] != '\0')
@@ -60,5 +61,5 @@ int ft_isdigitstr(const char *str)
             return (-1);
         i++;
     }
-    return (1);
+    return (0);
 }

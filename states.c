@@ -51,24 +51,24 @@ int	startSim(t_env *env)
 {
 	env->philos = malloc(sizeof(t_philo) * env->num_of_philos);
 	if (!env->philos)
-		return (0);
+		return (1);
 	env->forks = malloc(sizeof(pthread_mutex_t) * env->num_of_philos);
 	if (!env->forks)
 	{
 		free(env->philos);
-		return (0);
+		return (1);
 	}
 	if (createMutex(env))
 	{
 		free(env->philos);
 		free(env->forks);
-		return (0);
+		return (1);
 	}
 	if (createPhilo(env))
 	{
 		free(env->philos);
 		free(env->forks);
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
