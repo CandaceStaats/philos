@@ -45,14 +45,14 @@ void	dead(t_env *env, t_philo *philo)
 			pthread_mutex_lock(&env->meal);
 			if ((int)(get_time_in_ms() - philo[i].last_ate) >= env->time_to_die)
 			{
-				print("died", &philo[i], LOCK);
+				print("died", &philo[i], UNLOCK);
 				pthread_mutex_lock(&env->stoplock);
 				env->stop = 1;
 				pthread_mutex_unlock(&env->stoplock);
 			}
 			pthread_mutex_unlock(&env->meal);
 		}
-		if (env->stop)
+		if (checkStop(env))
 			break ;
 		i = 0;
 		while (env->philo_must_eat && i < env->num_of_philos

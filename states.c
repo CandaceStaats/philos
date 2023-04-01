@@ -39,7 +39,10 @@ static int	createForks(t_env *env)
 	while (i < env->num_of_philos)
 	{
 		if (pthread_mutex_init(&(env->forks[i]), NULL))
+		{
+		cleanup_mutexes(env);
 			return (1);
+		}
 		i++;
 	}
 	return (0);
