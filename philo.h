@@ -42,7 +42,7 @@ typedef struct s_env
 	pthread_mutex_t must_eat_lock;
 }				t_env;
 
-void				*isvalid(int argc, char **argv);
+int					isvalid(int argc, char **argv);
 int					errorChecks(t_env *env, int argc, char *argv[]);
 int					startSim(t_env *env);
 void				print(char *msg, t_philo *philo, int unlock);

@@ -25,7 +25,7 @@ int	errorChecks(t_env *env, int argc, char *argv[])
 		return (-1);
 	return (0);
 }
-void *isvalid(int argc, char **argv)
+int isvalid(int argc, char **argv)
 {
     int n;
 
@@ -35,12 +35,12 @@ void *isvalid(int argc, char **argv)
         if (ft_isdigitstr(argv[n]) == -1)
         {
             printf("Not a valid input");
-            exit(EXIT_FAILURE);
+            return(EXIT_FAILURE);
         }
         if (ft_atoi(argv[n]) < INT32_MIN || ft_atoi(argv[n]) > INT32_MAX)
         {
             printf("Error, Outside the bounds of integer");
-            exit(EXIT_FAILURE);
+            return(EXIT_FAILURE);
         }
         n++;
     }
