@@ -21,6 +21,7 @@ typedef struct s_philo
 	unsigned long	last_ate;
 	struct s_env	*env;
 	pthread_t		thread_id;
+	pthread_mutex_t timesEatenLock;
 }				t_philo;
 
 typedef struct s_env
@@ -37,7 +38,8 @@ typedef struct s_env
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	meal;
 	pthread_mutex_t stoplock;
-	pthread_mutex_t	writing;
+	pthread_mutex_t	wrt;
+	pthread_mutex_t must_eat_lock;
 }				t_env;
 
 void				*isvalid(int argc, char **argv);
@@ -57,7 +59,9 @@ void				*ft_calloc(size_t nitems, size_t size);
 char				*ft_itoa(int n);
 int					ft_isdigitstr(const char *str);
 char				*ft_strdup(const char *s1);
+void				cleanup_mutexes(t_env *env);
 int					checkStop(t_env *env);
-
+int					checkMustEat(t_env *env);
+int					checkTimesEaten(t_philo *philo);
 
 #endif

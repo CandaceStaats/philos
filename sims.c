@@ -8,7 +8,7 @@ static void	*simulation(void *params)
 	env = philo->env;
 	if (philo->pos % 2 && env->num_of_philos > 1)
 		sleepy(env->time_to_eat / 50, env);
-	while (checkStop(env) == 0 && !env->must_eat)
+	while (checkStop(env) == 0 && checkMustEat(env) == 0)
 	{
 		eat(philo);
 		print("is sleeping", philo, UNLOCK);
@@ -33,8 +33,7 @@ static void	exitThreads(t_env *env)
 	i = -1;
 	while (++i < env->num_of_philos)
 		pthread_mutex_destroy(&env->forks[i]);
-	pthread_mutex_destroy(&env->meal);
-	pthread_mutex_destroy(&env->writing);
+	cleanup_mutexes(env);
 	i = -1;
 	while (++i < env->num_of_philos)
 		free(env->philos[i].pos_str);
@@ -57,7 +56,6 @@ int	startThreads(t_env *env)
 			return (0);
 	}
 	dead(env, env->philos);
-	pthread_mutex_unlock(&env->writing);
 	exitThreads(env);
 	return (1);
 }

@@ -59,7 +59,26 @@ int checkStop(t_env *env)
 	return(steve);
 }
 
+int checkMustEat(t_env *env) //function added to avoid data races
+{
+	int steve;
+	steve = 0;
+	pthread_mutex_lock(&env->must_eat_lock);
+	if (env->must_eat == 1)
+		steve = 1;
+	pthread_mutex_unlock(&env->must_eat_lock);
+	return(steve);
+}
 
+int	checkTimesEaten(t_philo *philo) //function added to avoid data races
+{
+	int timesEaten;
+
+	pthread_mutex_lock(&philo->timesEatenLock);
+	timesEaten = philo->timesEaten;
+	pthread_mutex_unlock(&philo->timesEatenLock);
+	return timesEaten;
+}
 
 void	sleepy(unsigned long long timing, t_env *env)
 {
@@ -70,7 +89,8 @@ void	sleepy(unsigned long long timing, t_env *env)
 	{
 		if (get_time_in_ms() - begin >= timing)
 			break ;
-		usleep(env->num_of_philos * 2);
+		//usleep(env->num_of_philos * 2);
+		usleep(300); //in general a usleep of 200-300 is a good value for this better sleep function.
 	}
 }
 
