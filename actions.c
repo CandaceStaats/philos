@@ -1,18 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   actions.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cstaats <cstaats@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/04 10:14:42 by cstaats       #+#    #+#                 */
+/*   Updated: 2023/04/04 10:43:16 by cstaats       ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
-
-
 
 void	print(char *message, t_philo *philo, int unlock)
 {
-	char	*timedMessage;
+	char	*timed_message;
 
-	timedMessage = ft_itoa(get_time_in_ms() - philo->env->start);
+	timed_message = ft_itoa(get_time_in_ms() - philo->env->start);
 	pthread_mutex_lock(&philo->env->wrt);
-	if (checkStop(philo->env) == 0 && checkMustEat(philo->env) == 0)
-		printf("%s %s %s\n", timedMessage, philo->pos_str, message);
+	if (check_stop(philo->env) == 0 && check_must_eat(philo->env) == 0)
+		printf("%s %s %s\n", timed_message, philo->pos_str, message);
 	if (unlock)
 		pthread_mutex_unlock(&philo->env->wrt);
-	free(timedMessage);
+	free(timed_message);
 }
 
 void	eat(t_philo *philo)
@@ -26,9 +36,9 @@ void	eat(t_philo *philo)
 	philo->last_ate = get_time_in_ms();
 	pthread_mutex_unlock(&philo->env->meal);
 	sleepy(philo->env->time_to_eat, philo->env);
-	pthread_mutex_lock(&philo->timesEatenLock);
-	philo->timesEaten++;
-	pthread_mutex_unlock(&philo->timesEatenLock);
+	pthread_mutex_lock(&philo->times_eaten_lock);
+	philo->times_eaten++;
+	pthread_mutex_unlock(&philo->times_eaten_lock);
 	pthread_mutex_unlock(&philo->env->forks[philo->right_fork]);
 	pthread_mutex_unlock(&philo->env->forks[philo->left_fork]);
 }
@@ -52,14 +62,36 @@ void	dead(t_env *env, t_philo *philo)
 			}
 			pthread_mutex_unlock(&env->meal);
 		}
-		if (checkStop(env))
+		if (check_stop(env))
 			break ;
-		i = 0;
+	i = 0;
 		while (env->philo_must_eat && i < env->num_of_philos
-			&& checkTimesEaten(&philo[i]) >= env->philo_must_eat)
+			&& check_times_eaten(&philo[i]) >= env->philo_must_eat)
 			i++;
 		pthread_mutex_lock(&env->must_eat_lock);
 		env->must_eat = (i == env->num_of_philos);
 		pthread_mutex_unlock(&env->must_eat_lock);
 	}
 }
+
+int	check_stop(t_env *env)
+{
+	int	steve;
+
+	steve = 0;
+	pthread_mutex_lock(&env->stoplock);
+	if (env->stop == 1)
+		steve = 1;
+	pthread_mutex_unlock(&env->stoplock);
+	return (steve);
+}
+
+// void	dead_while(t_env *env, t_philo *philo)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (env->philo_must_eat && i < env->num_of_philos
+// 		&& check_times_eaten(&philo[i]) >= env->philo_must_eat)
+// 		i++;
+// }

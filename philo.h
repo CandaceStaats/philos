@@ -1,5 +1,17 @@
-#ifndef PHILOS_H
-# define PHILOS_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   philo.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cstaats <cstaats@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/04 09:58:42 by cstaats       #+#    #+#                 */
+/*   Updated: 2023/04/04 10:40:07 by cstaats       ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PHILO_H
+# define PHILO_H
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -13,7 +25,7 @@ struct	s_env;
 
 typedef struct s_philo
 {
-	int				timesEaten;
+	int				times_eaten;
 	int				left_fork;
 	int				right_fork;
 	int				pos;
@@ -21,7 +33,7 @@ typedef struct s_philo
 	unsigned long	last_ate;
 	struct s_env	*env;
 	pthread_t		thread_id;
-	pthread_mutex_t timesEatenLock;
+	pthread_mutex_t	times_eaten_lock;
 }				t_philo;
 
 typedef struct s_env
@@ -37,18 +49,18 @@ typedef struct s_env
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	meal;
-	pthread_mutex_t stoplock;
+	pthread_mutex_t	stoplock;
 	pthread_mutex_t	wrt;
-	pthread_mutex_t must_eat_lock;
+	pthread_mutex_t	must_eat_lock;
 }				t_env;
 
 int					isvalid(int argc, char **argv);
-int					errorChecks(t_env *env, int argc, char *argv[]);
-int					startSim(t_env *env);
+int					error_checks(t_env *env, int argc, char *argv[]);
+int					start_sim(t_env *env);
 void				print(char *msg, t_philo *philo, int unlock);
 void				eat(t_philo *philo);
 void				dead(t_env *env, t_philo *philo);
-int					startThreads(t_env *env);
+int					start_threads(t_env *env);
 unsigned long long	get_time_in_ms(void);
 void				sleepy(unsigned long long timing, t_env *env);
 int					ft_atoi(char *str);
@@ -60,8 +72,9 @@ char				*ft_itoa(int n);
 int					ft_isdigitstr(const char *str);
 char				*ft_strdup(const char *s1);
 void				cleanup_mutexes(t_env *env);
-int					checkStop(t_env *env);
-int					checkMustEat(t_env *env);
-int					checkTimesEaten(t_philo *philo);
+int					check_stop(t_env *env);
+int					check_must_eat(t_env *env);
+int					check_times_eaten(t_philo *philo);
+void				dead_while(t_env *env, t_philo *philo);
 
 #endif

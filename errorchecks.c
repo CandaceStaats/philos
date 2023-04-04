@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   errorchecks.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cstaats <cstaats@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/04 10:27:30 by cstaats       #+#    #+#                 */
+/*   Updated: 2023/04/04 10:31:14 by cstaats       ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
-int	errorChecks(t_env *env, int argc, char *argv[])
+
+int	error_checks(t_env *env, int argc, char *argv[])
 {
 	int	i;
 
@@ -25,41 +38,41 @@ int	errorChecks(t_env *env, int argc, char *argv[])
 		return (-1);
 	return (0);
 }
-int isvalid(int argc, char **argv)
-{
-    int n;
 
-    n = 1;
-    while (n < argc)
-    {
-        if (ft_isdigitstr(argv[n]) == -1)
-        {
-            printf("Not a valid input");
-            return(EXIT_FAILURE);
-        }
-        if (ft_atoi(argv[n]) < INT32_MIN || ft_atoi(argv[n]) > INT32_MAX)
-        {
-            printf("Error, Outside the bounds of integer");
-            return(EXIT_FAILURE);
-        }
-        n++;
-    }
+int	isvalid(int argc, char **argv)
+{
+	int	n;
+
+	n = 1;
+	while (n < argc)
+	{
+		if (ft_isdigitstr(argv[n]) == -1)
+		{
+			printf("Not a valid input");
+			return (EXIT_FAILURE);
+		}
+		if (ft_atoi(argv[n]) < INT32_MIN || ft_atoi(argv[n]) > INT32_MAX)
+		{
+			printf("Error, Outside the bounds of integer");
+			return (EXIT_FAILURE);
+		}
+		n++;
+	}
 	return (0);
 }
 
-int ft_isdigitstr(const char *str)
+int	ft_isdigitstr(const char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-	
-    if (str[i] == '-' || str[i] == '+')
-        i++;
-    while (str[i] != '\0')
-    {
-        if (!ft_isdigit(str[i]))
-            return (-1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i] != '\0')
+	{
+		if (!ft_isdigit(str[i]))
+			return (-1);
+		i++;
+	}
+	return (0);
 }

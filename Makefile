@@ -2,6 +2,8 @@ NAME = philo
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
+#-g fsanitize=address
+#-g fsanitize=thread
 SRCS = main.c states.c errorchecks.c sims.c \
 actions.c utils.c contutils.c 
 

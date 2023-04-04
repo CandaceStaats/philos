@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cstaats <cstaats@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/04/04 10:08:12 by cstaats       #+#    #+#                 */
+/*   Updated: 2023/04/04 10:13:59 by cstaats       ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	ft_atoi(char *str)
@@ -48,66 +60,24 @@ size_t	ft_strlen(char const *str)
 	return (cnt);
 }
 
-int checkStop(t_env *env)
+int	check_must_eat(t_env *env)
 {
-	int steve;
-	steve = 0;
-	pthread_mutex_lock(&env->stoplock);
-	if (env->stop == 1)
-		steve = 1;
-	pthread_mutex_unlock(&env->stoplock);
-	return(steve);
-}
+	int	steve;
 
-int checkMustEat(t_env *env) //function added to avoid data races
-{
-	int steve;
 	steve = 0;
 	pthread_mutex_lock(&env->must_eat_lock);
 	if (env->must_eat == 1)
 		steve = 1;
 	pthread_mutex_unlock(&env->must_eat_lock);
-	return(steve);
+	return (steve);
 }
 
-int	checkTimesEaten(t_philo *philo) //function added to avoid data races
+int	check_times_eaten(t_philo *philo)
 {
-	int timesEaten;
+	int	times_eaten;
 
-	pthread_mutex_lock(&philo->timesEatenLock);
-	timesEaten = philo->timesEaten;
-	pthread_mutex_unlock(&philo->timesEatenLock);
-	return timesEaten;
-}
-
-void	sleepy(unsigned long long timing, t_env *env)
-{
-	unsigned long	begin;
-
-	begin = get_time_in_ms();
-	while (checkStop(env) == 0)
-	{
-		if (get_time_in_ms() - begin >= timing)
-			break ;
-		//usleep(env->num_of_philos * 2);
-		usleep(300); //in general a usleep of 200-300 is a good value for this better sleep function.
-	}
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*cpy_s1;
-	size_t	cnt;
-
-	cnt = 0;
-	cpy_s1 = malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (cpy_s1 == NULL)
-		return (NULL);
-	while (s1[cnt] != '\0')
-	{
-		cpy_s1[cnt] = s1[cnt];
-		cnt++;
-	}
-	cpy_s1[cnt] = '\0';
-	return (cpy_s1);
+	pthread_mutex_lock(&philo->times_eaten_lock);
+	times_eaten = philo->times_eaten;
+	pthread_mutex_unlock(&philo->times_eaten_lock);
+	return (times_eaten);
 }
